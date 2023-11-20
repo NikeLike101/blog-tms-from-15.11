@@ -1,16 +1,26 @@
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import SignInPage from "./pages/signInPage";
-import React from "react";
+import React, { useEffect } from 'react';
 import {routeLocationsEnum} from "./Router";
 import MainPage from "./pages/mainPage";
 import NotFound404 from "./pages/notFound404";
 import SignUpPage from "./pages/signUpPage";
 import BlogPage from "./pages/blogPage";
+import { useAppSelector } from '../store/store';
 
 const RouterRoutes = () => {
 
+  const {user} = useAppSelector(state => state.userReducer)
 
-    return  <Routes>
+  const navigation = useNavigate()
+
+
+  useEffect(() => {
+if (user === undefined) {
+  navigation(routeLocationsEnum.signUp)
+}
+  }, [user]);
+  return  <Routes>
 <Route path='' >
 
 

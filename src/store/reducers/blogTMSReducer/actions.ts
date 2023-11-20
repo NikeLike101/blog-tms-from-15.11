@@ -12,7 +12,7 @@ export const getBlogPostsToStoreFromTMS = (options?: GetPostsFromTMSOptionsType)
         const dataPosts = await getPostsFromTMS(options)
         if (dataPosts === undefined) return
 
-        dispatch(setBlogPostsToStoreFromTMS(dataPosts))
+        dispatch(setBlogPostsToStoreFromTMS(dataPosts || []))
 
         dispatch(setIsLoadingStatusFromTMS(false))
     }

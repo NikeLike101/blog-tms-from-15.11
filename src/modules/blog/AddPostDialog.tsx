@@ -24,10 +24,8 @@ const AddPostDialog:React.FC<Props> = props => {
     }
 
     const handleChangeImage = async () => {
-        const newData:Blob = await generateImage()
-        console.log(newData,newData.text())
-
-        setImage(URL.createObjectURL(newData))
+        const newData = await generateImage()
+        setImage(newData ? URL.createObjectURL(newData) : null)
     }
 
     const handleClose = () => {
@@ -46,7 +44,7 @@ const AddPostDialog:React.FC<Props> = props => {
             text,
             title,
             description: text,
-            lesson_num: -1
+            lesson_num: 2020
         })
     }
 

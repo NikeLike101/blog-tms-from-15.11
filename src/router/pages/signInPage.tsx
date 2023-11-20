@@ -27,16 +27,16 @@ const SignInPage = () => {
 
     const handleLogin = () => {
 
-        const {isSuccess, error} = login({login: loginValue, password: passwordValue})
-
-        if (!isSuccess) {
-            setLoginError(error)
-            return;
-        }
-
-
-        dispatch(setUserDataToStore({login: loginValue, passwordHash: md(passwordValue), sessionStartDate: Date.now()}))
-        navigation(routeLocationsEnum.blogPage)
+        // const {isSuccess, error} = login({login: loginValue, password: passwordValue})
+        //
+        // if (!isSuccess) {
+        //     setLoginError(error)
+        //     return;
+        // }
+        //
+        //
+        // dispatch(setUserDataToStore({login: loginValue, passwordHash: md(passwordValue), sessionStartDate: Date.now()}))
+        // navigation(routeLocationsEnum.blogPage)
 
     }
 

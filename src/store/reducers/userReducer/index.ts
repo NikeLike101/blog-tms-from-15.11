@@ -4,7 +4,7 @@ import {UserReducerEnum} from "./actionTypes";
 
 
 type UserReducerType = {
-    user: User | null
+    user: User | null | undefined
 
 }
 
@@ -19,6 +19,8 @@ const userReducer: Reducer<UserReducerType> = (state = defaultState, action) => 
             return {...state, user: action.userData}
         case UserReducerEnum.LOGOUT:
             return {...state, user: null}
+        case UserReducerEnum.LOGOUT_BY_REFRESH:
+            return {...state, user: undefined}
         default:
             return {...state}
     }

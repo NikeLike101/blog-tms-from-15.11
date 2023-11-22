@@ -8,10 +8,12 @@ import md from 'md5'
 import { routeLocationsEnum } from "../Router";
 import {ArrowBack} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
+import { login } from '../../api/services/authService/service';
+import { LoginFailureReturnType, LoginSuccessReturnType } from '../../api/services/authService/types';
+import { setLocalStorageWithTime } from '../../utils/addTimeToExpireToStorage';
 
 
 const SignInPage = () => {
-    const {login} = useAuth()
     const navigation = useNavigate()
     const dispatch = useAppDispatch()
     const [loginValue, setLoginValue] = useState<string>('');
@@ -25,18 +27,20 @@ const SignInPage = () => {
         setLoginValue(e.target.value)
     }
 
-    const handleLogin = () => {
+    const handleLogin =async () => {
 
-        // const {isSuccess, error} = login({login: loginValue, password: passwordValue})
-        //
-        // if (!isSuccess) {
-        //     setLoginError(error)
-        //     return;
-        // }
-        //
-        //
-        // dispatch(setUserDataToStore({login: loginValue, passwordHash: md(passwordValue), sessionStartDate: Date.now()}))
-        // navigation(routeLocationsEnum.blogPage)
+        const loginReturnData  = await login({email: loginValue , password: passwordValue})
+        console.log(loginReturnData);
+        if ((loginReturnData as LoginFailureReturnType).detail !== undefined) {
+
+            setLoginError('creds')
+            return
+        }
+        const loginSuccess = loginReturnData as LoginSuccessReturnType
+        setLocalStorageWithTime('refreshToken', loginSuccess.refresh, 300000)
+        setLocalStorageWithTime('authToken', loginSuccess.access, 60000)
+
+        navigation(routeLocationsEnum.blogPage)
 
     }
 

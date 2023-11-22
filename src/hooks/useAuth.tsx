@@ -33,13 +33,13 @@ const useAuth = () => {
 
 
     const register = async (data: SignUpDataType): Promise<AuthMethodsReturnType> => {
-        const responseData = await signUpLocal(data)
-        setLocalStorageWithTime('authToken', responseData.authToken, 60000)
-        setLocalStorageWithTime('refreshToken', responseData.refreshToken, 300000)
+        const responseData = await signUp(data)
+        // setLocalStorageWithTime('authToken', responseData.authToken, 60000)
+        // setLocalStorageWithTime('refreshToken', responseData.refreshToken, 300000)
 
-        console.log(responseData, 'data');
+        // console.log(responseData, 'data');
 
-        return {isSuccess: true}
+        return {isSuccess: !(responseData.id === undefined), error: responseData.id === undefined ? 'error': undefined}
 
     }
 

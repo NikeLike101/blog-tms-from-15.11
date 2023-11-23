@@ -1,7 +1,6 @@
 export type User = {
-    login: string
-    passwordHash: string
-    sessionStartDate: number
+    email: string
+    password: string
 }
 
 export type BlogUser = {

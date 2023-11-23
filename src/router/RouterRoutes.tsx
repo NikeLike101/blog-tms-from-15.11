@@ -7,19 +7,22 @@ import NotFound404 from "./pages/notFound404";
 import SignUpPage from "./pages/signUpPage";
 import BlogPage from "./pages/blogPage";
 import { useAppSelector } from '../store/store';
+import { getLocalStorageWithTime } from '../utils/addTimeToExpireToStorage';
 
 const RouterRoutes = () => {
 
-  const {user} = useAppSelector(state => state.userReducer)
+  const {accessToken} = useAppSelector(state => state.userReducer)
 
   const navigation = useNavigate()
 
 
   useEffect(() => {
-if (user === undefined) {
-  navigation(routeLocationsEnum.signUp)
+    console.log(accessToken, 'accessToken');
+if (accessToken === null && getLocalStorageWithTime('authToken') === false) {
+  navigation(routeLocationsEnum.main)
 }
-  }, [user]);
+  }, [accessToken]);
+
   return  <Routes>
 <Route path='' >
 

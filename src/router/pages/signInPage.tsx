@@ -3,16 +3,25 @@ import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
 import PageContentWrapper from "../../components/page";
 import {useAppDispatch} from "../../store/store";
-import {setUserDataToStore} from "../../store/reducers/userReducer/actions";
+import { setAccessTokenToStore, setUserDataToStore } from '../../store/reducers/userReducer/actions';
 import md from 'md5'
 import { routeLocationsEnum } from "../Router";
 import {ArrowBack} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
 import { login } from '../../api/services/authService/service';
-import { LoginFailureReturnType, LoginSuccessReturnType } from '../../api/services/authService/types';
+import { LoginFailureReturnType, LoginReturnType, LoginSuccessReturnType } from '../../api/services/authService/types';
 import { setLocalStorageWithTime } from '../../utils/addTimeToExpireToStorage';
 
 
+
+const isLoginFailure = (loginData: LoginReturnType):loginData is LoginFailureReturnType => {
+    if ((loginData as LoginFailureReturnType)?.detail) {
+        return true
+    }
+
+    return false
+
+}
 const SignInPage = () => {
     const navigation = useNavigate()
     const dispatch = useAppDispatch()
@@ -31,15 +40,18 @@ const SignInPage = () => {
 
         const loginReturnData  = await login({email: loginValue , password: passwordValue})
         console.log(loginReturnData);
-        if ((loginReturnData as LoginFailureReturnType).detail !== undefined) {
 
+        if (isLoginFailure(loginReturnData)) {
             setLoginError('creds')
             return
         }
-        const loginSuccess = loginReturnData as LoginSuccessReturnType
-        setLocalStorageWithTime('refreshToken', loginSuccess.refresh, 300000)
-        setLocalStorageWithTime('authToken', loginSuccess.access, 60000)
 
+        const loginSuccess = loginReturnData as LoginSuccessReturnType
+        setLocalStorageWithTime('refreshToken', loginSuccess.refresh, 30000000)
+        setLocalStorageWithTime('authToken', loginSuccess.access, 30000)
+
+        dispatch(setUserDataToStore({email: loginValue, password: passwordValue}))
+        dispatch(setAccessTokenToStore(loginSuccess.access))
         navigation(routeLocationsEnum.blogPage)
 
     }

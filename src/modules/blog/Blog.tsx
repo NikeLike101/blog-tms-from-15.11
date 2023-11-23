@@ -4,6 +4,7 @@ import {getBlogPostsToStoreFromTMS} from "../../store/reducers/blogTMSReducer/ac
 import {Paper, Stack, Typography, Box, IconButton, Dialog, DialogTitle, DialogContent} from "@mui/material";
 import {AddOutlined} from "@mui/icons-material";
 import AddPostDialog from "./AddPostDialog";
+import { me } from '../../api/services/blogService/service';
 
 
 const Blog:React.FC = () => {
@@ -15,10 +16,11 @@ const Blog:React.FC = () => {
     }
     useEffect(() => {
     dispatch(getBlogPostsToStoreFromTMS({offset: 0, search: 'ф'}))
-        dispatch(getBlogPostsToStoreFromTMS({ordering: 'title', search: 't'}))
-       dispatch( getBlogPostsToStoreFromTMS({limit: 1, search: 'фы'}))
-       dispatch( getBlogPostsToStoreFromTMS())
-       dispatch( getBlogPostsToStoreFromTMS({limit: 1, search: 'ф', offset: 1, ordering: 'title', author__course_group: 1}))
+        console.log(me())
+       //  dispatch(getBlogPostsToStoreFromTMS({ordering: 'title', search: 't'}))
+       // dispatch( getBlogPostsToStoreFromTMS({limit: 1, search: 'фы'}))
+       // dispatch( getBlogPostsToStoreFromTMS())
+       // dispatch( getBlogPostsToStoreFromTMS({limit: 1, search: 'ф', offset: 1, ordering: 'title', author__course_group: 1}))
     }, []);
     useEffect(() => {
         console.log(posts, 'posts')

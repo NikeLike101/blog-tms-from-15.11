@@ -1,12 +1,14 @@
-import { getLocalStorageWithTime, setLocalStorageWithTime } from './addTimeToExpireToStorage';
+import { getLocalStorageWithTime } from './addTimeToExpireToStorage';
 import { AuthMethodsReturnType } from '../hooks/useAuth';
-import md5 from 'md5';
+
+import { refreshAccessToken } from '../api/services/authService/service';
+import { store } from '../store/store';
+import { UserReducerEnum } from '../store/reducers/userReducer/actionTypes';
 
 
-const refreshAuthToken = (refreshToken: string) => {
-  const newAuthToken = md5(`${refreshToken}`)
-  return { authToken: newAuthToken, refreshToken: md5(newAuthToken) }
-}
+
+
+
 
 export const refresh = async ():Promise<AuthMethodsReturnType> => {
   console.log('trying to get new authToken');
@@ -16,9 +18,7 @@ export const refresh = async ():Promise<AuthMethodsReturnType> => {
     localStorage.removeItem('refreshToken')
     return { isSuccess: false }
   }
-  const { authToken, refreshToken } = refreshAuthToken(oldRefreshToken)
-  setLocalStorageWithTime('authToken', authToken, 30000)
-  setLocalStorageWithTime('refreshToken', refreshToken, 60000)
-  console.log('new tokens collected');
-  return {isSuccess: true}
+  const {isSuccess} = await refreshAccessToken()
+  console.log('new token collected', isSuccess);
+  return { isSuccess }
 }

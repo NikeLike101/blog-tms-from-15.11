@@ -4,7 +4,7 @@ import {BlogTMSReducerEnum} from "./actionsTypes";
 
 
 type BlogTMSReducerType = {
-    posts: BlogPostFromTMS[]
+    posts: { data: BlogPostFromTMS[], totalCount: number }
     isLoading: boolean
     searchString: string
     activePost: BlogPostFromTMS | null
@@ -12,7 +12,7 @@ type BlogTMSReducerType = {
 
 const defState:BlogTMSReducerType = {
 
-    posts: [],
+    posts: {data: [], totalCount: 0},
     isLoading: false,
     searchString: '',
     activePost: null
@@ -25,7 +25,9 @@ const blogTMSReducer: Reducer<BlogTMSReducerType> = (state = defState, action) =
         case BlogTMSReducerEnum.SET_BLOG_USERS_TMS:
             return {...state, users: action.users}
         case BlogTMSReducerEnum.SET_BLOG_POSTS_TMS:
-            return {...state, posts: action.posts}
+            return {...state, posts: {...state.posts,data: action.posts, }}
+        case BlogTMSReducerEnum.SET_BLOG_POSTS_WITH_COUNT_TMS:
+            return {...state, posts: action.data}
         case BlogTMSReducerEnum.SET_SELECTED_BLOG_USER_ID_TMS:
             return {...state, selectedUserId: action.selectedUserId}
         case BlogTMSReducerEnum.SET_COMMENTS_MODAL_STATUS_TMS:

@@ -28,7 +28,7 @@ export const getPostByIdFromTMS = async (postId: number) => {
     return await rawData.json()
 }
 
-export const getPostsFromTMS = async (options?: GetPostsFromTMSOptionsType) => {
+export const getPostsFromTMS = async (options?: GetPostsFromTMSOptionsType):Promise<GetPostsFromTMSResponseType | false > => {
 
     let authToken = getLocalStorageWithTime('authToken')
     if (authToken === false) {
@@ -44,10 +44,10 @@ export const getPostsFromTMS = async (options?: GetPostsFromTMSOptionsType) => {
     authToken = getLocalStorageWithTime('authToken') as string
 
     const rawData = await fetch(`https://studapi.teachmeskills.by/blog/posts${getQueryParams(options)}`)
-    const {results}:GetPostsFromTMSResponseType = await rawData.json()
-    if (!results) return
+    const data:GetPostsFromTMSResponseType = await rawData.json()
+    if (!data) return false
 
-    return results
+    return data
 }
 
 export const createPostFromTMS = async (createPostData: CreatePostDataType) => {

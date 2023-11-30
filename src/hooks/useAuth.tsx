@@ -15,6 +15,7 @@ type UserDataHash = {
 export type AuthMethodsReturnType = {
     isSuccess: boolean
     error?: string
+    data?: unknown
 }
 
 

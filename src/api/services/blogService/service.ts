@@ -4,6 +4,7 @@ import { refresh } from '../../../utils/refreshAuthToken';
 import { store } from '../../../store/store';
 import { UserReducerEnum } from '../../../store/reducers/userReducer/actionTypes';
 import { baseUrl } from '../../../constants';
+import { AuthMethodsReturnType } from '../../../hooks/useAuth';
 
 
 
@@ -50,21 +51,37 @@ export const getPostsFromTMS = async (options?: GetPostsFromTMSOptionsType):Prom
     return data
 }
 
-export const createPostFromTMS = async (createPostData: CreatePostDataType) => {
+export const createPostFromTMS = async (createPostData: CreatePostDataType): Promise<AuthMethodsReturnType> => {
 
     let authToken = getLocalStorageWithTime('authToken')
     if (authToken === false) {
         const response = await refresh()
         if (!response) {
             store.dispatch({ type: UserReducerEnum.LOGOUT_BY_REFRESH })
-            return false
+            return { isSuccess: false }
         }
     }
 
     authToken = getLocalStorageWithTime('authToken')
+
+    const formData = new FormData()
+    const {image, text,description,title,lesson_num} = createPostData
+    formData.append('image', image)
+    formData.append('text', text)
+    formData.append('lesson_num', String(lesson_num))
+    formData.append('title', title)
+    formData.append('description', description)
+
+
     const rawData = await  fetch(`https://studapi.teachmeskills.by/blog/posts/`,
-                                 {method: 'POST', body: JSON.stringify(createPostData)})
-    return await rawData.json()
+                                 {method: 'POST', body: formData, headers: {
+                                         'Authorization': `Bearer ${authToken}`
+                                     }})
+    if (!rawData.ok) {
+        return {isSuccess: false}
+    }
+
+    return { isSuccess: true, data: rawData.json() }
 }
 
 export const generateImage = async () => {

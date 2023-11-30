@@ -10,3 +10,10 @@ export type AddPostFormValueType = {
   title: string,
   description: string
 }
+export type EditPostFormValueType = {
+  image: string | null,
+  title: string,
+  description: string,
+  date: string,
+  author: string
+}

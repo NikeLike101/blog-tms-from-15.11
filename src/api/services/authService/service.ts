@@ -4,6 +4,7 @@ import { AuthMethodsReturnType } from '../../../hooks/useAuth';
 import { getLocalStorageWithTime, setLocalStorageWithTime } from '../../../utils/addTimeToExpireToStorage';
 import { store } from '../../../store/store';
 import { UserReducerEnum } from '../../../store/reducers/userReducer/actionTypes';
+import { refresh } from '../../../utils/refreshAuthToken';
 
 
 export const signUp = async (signUpData: SignUpDataType) => {
@@ -63,8 +64,22 @@ export const refreshAccessToken = async (): Promise<AuthMethodsReturnType> => {
 }
 
 export const getAllUsers = async () => {
-  const rawData = await fetch(`${baseUrl}/auth/users/`, {
-    method: 'GET'
+  let authToken = getLocalStorageWithTime('authToken')
+  if (authToken === false) {
+    const response = await refresh()
+    if (!response) {
+      store.dispatch({ type: UserReducerEnum.LOGOUT_BY_REFRESH })
+      return { isSuccess: false }
+    }
+  }
+
+  authToken = getLocalStorageWithTime('authToken')
+
+  const rawData = await fetch(`${baseUrl}/auth/users/?limit=10&offset=0`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
   })
   return await rawData.json()
 }

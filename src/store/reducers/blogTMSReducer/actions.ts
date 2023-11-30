@@ -3,6 +3,8 @@ import {BlogPost, BlogPostFromTMS,} from "../../../models/User";
 import {getPostsFromTMS} from "../../../api/services/blogService/service";
 import {AnyAction, Dispatch} from "@reduxjs/toolkit";
 import {GetPostsFromTMSOptionsType} from "../../../api/services/blogService/types";
+import EditPostDialog from '../../../modules/blog/editPostDialog';
+import { EditPostDialogDataType } from './types';
 
 
 export const getBlogPostsToStoreFromTMS = (options?: GetPostsFromTMSOptionsType) => {
@@ -46,9 +48,22 @@ export const setIsLoadingStatusFromTMS = (newStatus: boolean) => {
         newStatus
     }
 }
+export const setEditPostDialogDataFromTMS = (editPostForDialog: BlogPostFromTMS | null) => {
+    return {
+        type: BlogTMSReducerEnum.SET_EDIT_POST_DIALOG_DATA,
+        editPostForDialog
+    }
+}
 export const setSearchStringToStoreFromTMS = (newSearchString: string) => {
     return {
         type: BlogTMSReducerEnum.SET_SEARCH_STRING_TMS,
         newSearchString
+    }
+}
+
+export const setAuthors = (newAuthors: string[]) => {
+    return {
+        type:BlogTMSReducerEnum.SET_AUTHORS,
+        authors: newAuthors
     }
 }

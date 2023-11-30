@@ -1,10 +1,11 @@
 import React, { BaseSyntheticEvent, useEffect, useState } from 'react';
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
 import {createPostFromTMS, generateImage} from "../../../api/services/blogService/service";
 import { AddPostFormValueType } from '../types';
 import { useFormik } from 'formik';
-import ImageSelector from './ImageSelector';
+import RandomImageSelector from '../../../components/imageSelector/RandomImageSelector';
 import { addPostValidationSchema } from './validationSchema';
+import ImageSelector from '../../../components/imageSelector';
 
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
 }
 const AddPostDialog:React.FC<Props> = props => {
     const {open,onClose} = props
-
+    const [isError, setIsError] = useState<string | null>(null);
 
     const initialFormikValues:AddPostFormValueType = {
         title: '',
@@ -22,15 +23,19 @@ const AddPostDialog:React.FC<Props> = props => {
         image: null
     }
 
-    const handleSubmit = (formikValues: AddPostFormValueType) => {
+    const handleSubmit = async (formikValues: AddPostFormValueType) => {
         if(formikValues.image === null) return
-        createPostFromTMS({
+        const {isSuccess} = await createPostFromTMS({
             image: formikValues.image ,
             text: formikValues.description,
             title: formikValues.title,
             description: formikValues.description,
             lesson_num: 2020
         })
+        if (!isSuccess) {
+            setIsError('server error')
+            return
+        }
         handleClose()
     }
 
@@ -73,7 +78,8 @@ const AddPostDialog:React.FC<Props> = props => {
         <DialogTitle>Post form</DialogTitle>
         <DialogContent>
             <form onSubmit={formik.handleSubmit}>
-                <ImageSelector value={formik.values.image} onChange={handleImageChange}/>
+                <ImageSelector image={formik.values.image} onChange={handleImageChange}/>
+                {/*<ImageSelector value={formik.values.image} onChange={handleImageChange}/>*/}
             <TextField
               name='title'
               value={formik.values.title}
@@ -89,13 +95,15 @@ const AddPostDialog:React.FC<Props> = props => {
             </form>
         </DialogContent>
         <DialogActions>
-            <Button onClick={handleClose}>cancel</Button>
+<Stack>
+    {isError !== null && isError}
+            <Box><Button onClick={handleClose}>cancel</Button>
             <Button
               disabled={
                 !!Object.values(formik.values).filter(value => !value).length ||
                 !!Object.keys(formik.errors).length}
-                    onClick={handleDone}>done</Button>
-        </DialogActions>
+              onClick={handleDone}>done</Button></Box></Stack>
+    </DialogActions>
     </Dialog>
 }
 

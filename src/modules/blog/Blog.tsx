@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../store/store";
-import {getBlogPostsToStoreFromTMS} from "../../store/reducers/blogTMSReducer/actions";
+import { getBlogPostsToStoreFromTMS, setAuthors } from '../../store/reducers/blogTMSReducer/actions';
 import {Paper, Stack, Typography, Box, IconButton, Dialog, DialogTitle, DialogContent} from "@mui/material";
 import {AddOutlined} from "@mui/icons-material";
 import AddPostDialog from "./addPostDialog/AddPostDialog";
-import { me } from '../../api/services/blogService/service';
+import { getPostsFromTMS, me } from '../../api/services/blogService/service';
 import PostList from './PostList';
 import Pagination from '../../components/pagination';
 import { UpdatePostsByDataType } from './types';
+import EditPostDialog from './editPostDialog';
 
 
-const cardsPerPage = 100
+const cardsPerPage = 10
 
 const Blog:React.FC = () => {
     const dispatch = useAppDispatch()
@@ -33,7 +34,19 @@ const Blog:React.FC = () => {
     }, [posts]);
 
 
+    useEffect(() => {
+        const getData = async () => {
 
+            const data =  await getPostsFromTMS({limit: totalCount +1, offset: 0})
+            console.log(data);
+            if (!data) return
+            const authorsIdsCollection = Array.from(new Set(data.results?.map(post => String(post.author))))
+            dispatch(setAuthors(authorsIdsCollection))
+        }
+
+        getData()
+
+    }, [totalCount]);
 
     const updatePosts = (data:UpdatePostsByDataType) => {
         const {currentPage} = data
@@ -65,6 +78,7 @@ const Blog:React.FC = () => {
             <Pagination count={totalCount} rowsPerPage={cardsPerPage} onPageChange={handlePageChange} activePage={activePage}/>
         </Stack>
         <AddPostDialog open={isAddPostDialogOpen} onClose={() => setIsAddPostDialogOpen(false)}/>
+        <EditPostDialog/>
     </>
 }
 

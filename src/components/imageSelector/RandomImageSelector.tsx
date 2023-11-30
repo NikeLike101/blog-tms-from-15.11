@@ -1,16 +1,16 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { generateImage } from '../../../api/services/blogService/service';
+import { generateImage } from '../../api/services/blogService/service';
 
 interface Props {
   value: string | null
   onChange: (newValue: string | null) => void
 }
 
-const ImageSelector:React.FC<Props> = props => {
+const RandomImageSelector:React.FC<Props> = props => {
   const {value,onChange} = props
   const handleChangeImage = async () => {
-      const newData = await generateImage()
+    const newData = await generateImage()
 
 
     onChange(newData ? URL.createObjectURL(newData) : null)
@@ -21,4 +21,4 @@ const ImageSelector:React.FC<Props> = props => {
     style={{width: '100%', height: '100%'}} src={value}/>}</Box>
 }
 
-export default ImageSelector
+export default RandomImageSelector

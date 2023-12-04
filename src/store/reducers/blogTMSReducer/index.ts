@@ -4,7 +4,7 @@ import { BlogTMSReducerEnum } from './actionsTypes';
 import { PostsDataType } from './types';
 
 
-type BlogTMSReducerType = {
+export type BlogTMSReducerType = {
     posts: PostsDataType
     isLoading: boolean
     searchString: string

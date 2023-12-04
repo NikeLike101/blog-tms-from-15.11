@@ -4,7 +4,7 @@ import {UserReducerEnum} from "./actionTypes";
 import { getLocalStorageWithTime } from '../../../utils/addTimeToExpireToStorage';
 
 
-type UserReducerType = {
+export type UserReducerType = {
     user: User | null | undefined
     accessToken: string | null
 

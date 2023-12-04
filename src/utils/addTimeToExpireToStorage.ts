@@ -6,7 +6,7 @@ export const setLocalStorageWithTime = (key: string, value: string, timeToAlive:
   localStorage.setItem(key, JSON.stringify({ value: value, timeToExpire: Date.now() + timeToAlive }))
 }
 export const getLocalStorageWithTime = (key: string): false | string => {
-
+  if (key.length === 0) return false
   const rawData = localStorage.getItem(key)
   if (rawData === null || rawData === undefined || rawData.length === 0) return false
   const { value, timeToExpire } =  JSON.parse(rawData)

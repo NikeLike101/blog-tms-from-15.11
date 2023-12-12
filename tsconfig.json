@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": ["node", "jest"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,7 +21,17 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "paths": {
+    "@Api/*":  ["./src/api/services/*"],
+    "@Components/*":  ["./src/components/*"],
+    "@Hooks/*":  ["./src/hooks/*"],
+    "@Store/*":  ["./src/store/*"],
+    "@Models/*":  ["./src/models/*"]
+  },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "**/*.test.*"
   ]
 }

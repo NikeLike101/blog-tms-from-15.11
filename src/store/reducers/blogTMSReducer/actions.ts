@@ -1,11 +1,11 @@
 import {BlogTMSReducerEnum} from "./actionsTypes";
 import {BlogPost, BlogPostFromTMS,} from "../../../models/User";
-import {getPostsFromTMS} from "../../../api/services/blogService/service";
 import {AnyAction, Dispatch} from "@reduxjs/toolkit";
 import {GetPostsFromTMSOptionsType} from "../../../api/services/blogService/types";
 import EditPostDialog from '../../../modules/blog/editPostDialog';
 import { EditPostDialogDataType } from './types';
-
+// import { getPostsFromTMS } from "../../../api/services/blogService/service";
+import { getPostsFromTMS } from '@Api/blogService/service';
 
 export const getBlogPostsToStoreFromTMS = (options?: GetPostsFromTMSOptionsType) => {
 

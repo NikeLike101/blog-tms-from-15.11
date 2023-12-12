@@ -1,4 +1,4 @@
-import {Reducer} from "@reduxjs/toolkit";
+import { Action, Reducer } from '@reduxjs/toolkit';
 import {User} from "../../../models/User";
 import {UserReducerEnum} from "./actionTypes";
 import { getLocalStorageWithTime } from '../../../utils/addTimeToExpireToStorage';
@@ -15,8 +15,10 @@ const defaultState:UserReducerType = {
     accessToken: getLocalStorageWithTime('authToken') === false ? getLocalStorageWithTime('authToken') as string : null
 }
 
+type AnyAction = { type: string, [key:string]: any}
 
-const userReducer: Reducer<UserReducerType> = (state = defaultState, action) => {
+
+const userReducer: Reducer<UserReducerType, AnyAction> = (state = defaultState, action ) => {
     switch (action.type) {
         case UserReducerEnum.LOGIN:
             return {...state, user: action.userData}

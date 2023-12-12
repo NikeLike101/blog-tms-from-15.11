@@ -1,4 +1,4 @@
-const methods = require('./addTimeToExpireToStorage');
+const methods = require('./addTimeToExpireToStorage')
 
 
 describe("addTimeToExpireToStorage", () => {

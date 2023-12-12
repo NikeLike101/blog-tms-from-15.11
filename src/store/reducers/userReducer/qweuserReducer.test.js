@@ -3,7 +3,7 @@ import userReducer, { UserReducerType } from './index';
 import { clearUserDataFromStore, setAccessTokenToStore, setUserDataToStore } from './actions';
 import {User} from '../../../models/User'
 
-let state:UserReducerType
+let state
 
 beforeEach(()=>{
   state =  {

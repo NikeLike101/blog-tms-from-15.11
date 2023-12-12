@@ -4,7 +4,7 @@ import { setUserDataToStore } from '../userReducer/actions';
 import { setAuthors } from './actions';
 
 
-let state:BlogTMSReducerType
+let state
 
 beforeEach(() => {
   state = {
@@ -19,7 +19,7 @@ beforeEach(() => {
 
 describe('blogTMSReducer works successfully', () => {
   it('should ', () => {
-    const mockAuthors: string[] = ['asd', 'zxc', 'qwe']
+    const mockAuthors = ['asd', 'zxc', 'qwe']
 
     const newState = blogTMSReducer(state, setAuthors(mockAuthors))
     

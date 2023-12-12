@@ -40,7 +40,7 @@ onPageChange,
     <Box sx={{display:'flex'}}>
     {Array.from({ length: Math.ceil(count / rowsPerPage)}).map((_, index) =>
       <Box
-        sx={{padding: '4px' , borderRadius: '6px', background: index + 1 === activePage ? '#004' : '#ccc'}}
+        sx={{padding: '4px' , borderRadius: '6px', background: index + 1 === activePage ? '#004' : '#ccc',}}
         onClick={() => handlePageSelect(index + 1)}>
         {index+1}
       </Box>)}

@@ -3,14 +3,14 @@ const { middlewareHandler } = require('./methodsForTest');
 describe('methodsForTest', () => {
   it('should 10 return false', () => {
     let isAllowedId10
-    const handler = (isAllowed: boolean) => isAllowedId10 = isAllowed
+    const handler = (isAllowed) => isAllowedId10 = isAllowed
     middlewareHandler(10, handler)
     console.log(isAllowedId10);
     expect(isAllowedId10).toBeFalsy()
   });
   it('should -10 return false', () => {
     let isAllowedId10
-    const handler = (isAllowed: boolean) => isAllowedId10 = isAllowed
+    const handler = (isAllowed) => isAllowedId10 = isAllowed
     middlewareHandler(-10, handler)
     console.log(isAllowedId10);
     expect(isAllowedId10).toBeFalsy()
@@ -19,7 +19,7 @@ describe('methodsForTest', () => {
   it('should convert negative works correct', () => {
     let isAllowedNegative
     let allowedIdConverted
-    const handler = (isAllowed: boolean, allowedId: number | null) => {
+    const handler = (isAllowed, allowedId) => {
       isAllowedNegative = isAllowed;
       allowedIdConverted = allowedId
     }
